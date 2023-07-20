@@ -1,10 +1,11 @@
 from django.db import models
 from django.utils import timezone
 from Account.models import User
+from Company.models import Company
 
 class Employee(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    employee_company = models.ForeignKey(to="Company.Company",on_delete=models.CASCADE,related_name="employee_company")
+    employee_company = models.ForeignKey(Company,on_delete=models.CASCADE,related_name="employee_company")
     created_at = models.DateTimeField(default=timezone.now)
     updated_at = models.DateTimeField(default=timezone.now) 
 
