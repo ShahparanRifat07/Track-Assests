@@ -21,6 +21,6 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('',include('Account.urls',namespace='Account')),
     path('company/',include('Company.urls',namespace='Company')),
-    path('employee/',include('Employee.urls',namespace='Employee')),
-    path('device/',include('Device.urls',namespace='Device')),
+    path('company/employee/',include('Employee.urls',namespace='Employee')),
+    path('company/device/',include('Device.urls',namespace='Device')),
 ]

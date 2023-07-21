@@ -8,6 +8,13 @@ from .decorators import manager_required
 # Create your views here.
 
 
+@manager_required
+def employee_list(request):
+    employees = Employee.objects.select_related('user').filter(employee_company=request.user.company_manager)
+    context = {
+        'employees' : employees,
+    }
+    return render(request, 'employee/employee_list.html',context)
 
 @manager_required
 def add_employee(request):

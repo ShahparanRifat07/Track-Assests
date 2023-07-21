@@ -3,19 +3,19 @@
       Home
     </a>
 
-    <a class="item">
+    <a href="{% url 'Employee:employee-list' %}" class="item">
       Employee
     </a>
     <a class="item">
         Devices
       </a>
     <div class="right menu">
-      <!-- <div class="item">
+      <div class="item">
         <div class="ui icon input">
           <input type="text" placeholder="Search...">
           <i class="search link icon"></i>
         </div>
-      </div> -->
+      </div>
       {% if user.is_authenticated %}
       <form class="ui item" action="{% url 'Account:logout' %}" method="Post">
         {% csrf_token %}

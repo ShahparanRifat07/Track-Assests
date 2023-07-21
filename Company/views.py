@@ -2,7 +2,7 @@ from django.shortcuts import render,redirect
 from django.http import HttpResponse
 from django.contrib import messages
 from .helper import *
-
+from .decorators import manager_redirect
 
 from .models import Company
 
@@ -15,6 +15,7 @@ This can be also done quickly and with much less code by using django forms
 def dashboard(request):
     return render(request,'company/dashboard.html')
 
+@manager_redirect
 def create_company(request):
     if request.method == "POST":
         received_company_name = request.POST.get("company-name")

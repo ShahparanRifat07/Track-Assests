@@ -1,4 +1,5 @@
 from django.core.exceptions import PermissionDenied
+from django.core.exceptions import ObjectDoesNotExist
 from django.contrib import messages
 from django.shortcuts import redirect
 
@@ -10,7 +11,7 @@ def manager_required(view_fun):
                     return view_fun(request,*args,**kwargs)
                 else:
                     raise PermissionDenied
-            except:
+            except ObjectDoesNotExist:
                 messages.add_message(request, messages.INFO, "Create a Company account to access")
                 return redirect('Company:create-company')
         else:
