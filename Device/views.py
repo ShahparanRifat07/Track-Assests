@@ -1,11 +1,12 @@
 from django.shortcuts import render,redirect
 from django.core.exceptions import ObjectDoesNotExist
 from django.http import HttpResponse,HttpResponseNotAllowed,Http404
+from django.db.models import Q
 from django.contrib import messages
 from .forms import DeviceForm
 from .models import  Device,DeviceLog
 from Employee.models import Employee
-from .decorators import manager_required
+from .decorators import manager_required,product_active_required
 from django.utils import timezone
 # Create your views here.
 
@@ -14,7 +15,7 @@ from django.utils import timezone
 @manager_required
 def device_list(request):
     if request.method == "GET":
-        devices = Device.objects.select_related('company').filter(company=request.user.company_manager)
+        devices = Device.objects.select_related('company').filter(Q(company=request.user.company_manager) & Q(active=True))
         context = {
             'devices' : devices,
         }
@@ -48,12 +49,11 @@ def add_device(request):
     
 
 @manager_required
+@product_active_required
 def check_out_device(request,id):
-    try:
-        device = Device.objects.get(id=id)
-    except ObjectDoesNotExist:
-        return HttpResponse("Page Not Found",status=404)
-    
+
+    device = Device.objects.get(id=id)
+
     if request.method == "POST":
         if device.available == True:
             try:
@@ -87,18 +87,27 @@ def check_out_device(request,id):
 
 
 @manager_required
+@product_active_required
 def check_in_device(request,id):
-    try:
-        device = Device.objects.get(id=id)
-    except ObjectDoesNotExist:
-        return HttpResponse("Page Not Found",status=404)
+
+    device = Device.objects.get(id=id)
     if request.method == "POST":
         pass
     elif request.method == "GET":
-        context = {
-            'device' : device,
-        }
-        return render(request,'device/checkin_device.html',context)
+        if device.available == False:
+            try:
+                latest_device_log = DeviceLog.objects.filter(device=device, active=True).order_by('-checkout_date').first()
+            except ObjectDoesNotExist:
+                messages.add_message(request, messages.INFO, "Device needs to be chekout first")
+                return redirect('Device:device-list')
+            context = {
+                'device' : device,
+                'device_log':latest_device_log,
+            }
+            return render(request,'device/checkin_device.html',context)
+        else:
+            messages.add_message(request, messages.INFO, "Device is currently not available")
+            return redirect('Device:device-list')
     else:
         return HttpResponse("Request Method not allowed",status = 405)
     

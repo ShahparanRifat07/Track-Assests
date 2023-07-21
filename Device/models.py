@@ -16,6 +16,7 @@ class Device(models.Model):
     product_id = models.CharField(max_length=6,blank=False,null=False)
     company = models.ForeignKey(Company,on_delete=models.CASCADE,related_name='device_company')
     available = models.BooleanField(default=True)
+    active = models.BooleanField(default=True)
     condition = models.CharField(max_length = 1, choices = CONDITION, default="1")
     created_at = models.DateTimeField(default=timezone.now)
     updated_at = models.DateTimeField(auto_now=True) 

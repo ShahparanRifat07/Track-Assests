@@ -16,23 +16,30 @@
         <tbody>
             <tr class="collapsing">
               <td>Employee</td>
-              <td>Engineer</td>
+              <td>{{device_log.employee.user.first_name}}  {{device_log.employee.user.last_name}}</td>
             </tr>
             <tr class="collapsing">
                 <td>Chekout Date</td>
-                <td>Engineer</td>
+                <td>{{device_log.checkout_date}}</td>
             </tr>
             <tr class="collapsing">
                 <td>Condition (Checkout)</td>
-                <td>Engineer</td>
+                {% if device_log.condition_at_checkout_day == "1"  %}
+                    <td >Good</td>
+                {% elif device_log.condition_at_checkout_day == "2" %}
+                    <td >Average</td>
+                {% elif device_log.condition_at_checkout_day == "3" %}
+                    <td >Bad</td>
+                {% endif %}
             </tr>
             <tr class="collapsing">
                 <td>Condition (Checkin)</td>
                 <td>
-                    <select name="" id="">
-                        <option value="">Good</option>
-                        <option value="">Average</option>
-                        <option value="">Bad</option>
+                    <select name="condition" id="">
+                        <option value="" disabled selected>Condition</option>
+                        <option value="1">Good</option>
+                        <option value="2">Average</option>
+                        <option value="3">Bad</option>
                     </select>
                 </td>
             </tr>
@@ -47,6 +54,6 @@
 
 
 
-    <button class="ui button" type="submit">Checkout</button>
+    <button class="ui button" type="submit">Checkin</button>
 </form>
 {% endblock content %}
