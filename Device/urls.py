@@ -1,9 +1,10 @@
 from django.urls import path
-from .views import add_device,check_out_device,device_list
+from .views import add_device,check_out_device,device_list,check_in_device
 
 app_name ='Device'
 urlpatterns = [
     path('add/',add_device,name="add-device"),
     path('list/',device_list,name="device-list"),
-    path('check-out',check_out_device,name="checkout-device"),
+    path('check-out/<int:id>',check_out_device,name="checkout-device"),
+    path('check-in/<int:id>',check_in_device,name="checkin-device"),
 ]

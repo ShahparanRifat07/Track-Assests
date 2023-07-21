@@ -1,0 +1,52 @@
+{% extends 'layout/app.html' %}
+{% block content %}
+<h2>Device Chekout</h2>
+<hr>
+<form class="ui form" action="{% url 'Device:checkout-device' device.id %}" method="POST">
+    {% csrf_token %}
+
+    <table class="ui table">
+        <thead>
+            <tr>
+                <th colspan="3">
+                    {{device.name}}
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr class="collapsing">
+              <td>Employee</td>
+              <td>Engineer</td>
+            </tr>
+            <tr class="collapsing">
+                <td>Chekout Date</td>
+                <td>Engineer</td>
+            </tr>
+            <tr class="collapsing">
+                <td>Condition (Checkout)</td>
+                <td>Engineer</td>
+            </tr>
+            <tr class="collapsing">
+                <td>Condition (Checkin)</td>
+                <td>
+                    <select name="" id="">
+                        <option value="">Good</option>
+                        <option value="">Average</option>
+                        <option value="">Bad</option>
+                    </select>
+                </td>
+            </tr>
+            <tr class="collapsing">
+                <td>Comment</td>
+                <td>
+                    <textarea name="" id="" rows="3"></textarea>
+                </td>
+            </tr>
+          </tbody>
+    </table>
+
+
+
+    <button class="ui button" type="submit">Checkout</button>
+</form>
+{% endblock content %}

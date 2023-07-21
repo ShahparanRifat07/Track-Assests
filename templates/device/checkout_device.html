@@ -1,0 +1,21 @@
+{% extends 'layout/app.html' %}
+{% block content %}
+<h2>Device Chekout</h2>
+<hr>
+<h5>Device Name: {{device.name}}</h5>
+<form class="ui form" action="{% url 'Device:checkout-device' device.id %}" method="POST">
+
+    {% csrf_token %}
+    <div class="field">
+        <label>Employees</label>
+        <select name="employee_id" id=""> 
+            <option value="" disabled selected>Selet Employee</option>
+            {% for employee in employees  %}
+                <option value="{{employee.id}}">{{employee.user.first_name}} {{employee.user.last_name}}</option>
+            {% endfor %}
+        </select>
+    </div>
+
+    <button class="ui button" type="submit">Checkout</button>
+</form>
+{% endblock content %}

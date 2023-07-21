@@ -6,6 +6,14 @@ from .models import User
 
 # Create your views here.
 
+def home(request):
+    if request.user.is_authenticated:
+        if request.user.company_manager:
+            return redirect("Company:dashboard-company")
+    else:
+        return render(request,'index.html')
+
+
 def account_login(request):
     if not request.user.is_authenticated:
         if request.method == "POST":

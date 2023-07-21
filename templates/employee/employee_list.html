@@ -1,7 +1,11 @@
 {% extends 'layout/app.html' %}
 
 {% block content %}
-<h3>Employee List</h3>
+<div style="display: flex; justify-content: space-between;">
+    <h3>Employee List</h3>
+    <a class="ui primary button" href="{% url 'Employee:add-employee' %}">Add Employee</a>
+</div>
+
 <hr>
 <table class="ui celled table">
     <thead>

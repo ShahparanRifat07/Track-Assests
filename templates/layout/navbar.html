@@ -1,7 +1,8 @@
 <div class="ui secondary  menu">
-    <a class="active item">
+    <a href="{% url 'Account:home' %}" class="active item">
       Home
     </a>
+    {% if user.is_authenticated %}
 
     <a href="{% url 'Employee:employee-list' %}" class="item">
       Employee
@@ -9,13 +10,14 @@
     <a href="{% url 'Device:device-list' %}" class="item">
         Devices
       </a>
+    {% endif %}
     <div class="right menu">
-      <div class="item">
+      <!-- <div class="item">
         <div class="ui icon input">
           <input type="text" placeholder="Search...">
           <i class="search link icon"></i>
         </div>
-      </div>
+      </div> -->
       {% if user.is_authenticated %}
       <form class="ui item" action="{% url 'Account:logout' %}" method="Post">
         {% csrf_token %}

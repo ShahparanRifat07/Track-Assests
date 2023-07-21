@@ -3,20 +3,27 @@
 
 
 {% block content %}
-<h3>Device List</h3>
+<div style="display: flex; justify-content: space-between;">
+    <h3>Device List</h3>
+    <a class="ui primary button" href="{% url 'Device:add-device' %}">Add Device</a>
+</div>
 <hr>
 <table class="ui celled table">
     <thead>
-      <tr><th>Name</th>
+      <tr>
+        <th>Device ID</th><th>Name</th>
       <th>Condition</th>
       <th>Available</th>
-      <th>Chekin</th>
       <th>Chekout</th>
+      <th>Chekin</th>
+      <th>Action</th>
+      <th>Log</th>
     </tr></thead>
     <tbody>
         
         {% for device in devices  %}
         <tr>
+            <td >{{device.product_id}}</td>
             <td >{{device.name}}</td>
             
             {% if device.condition == "1"  %}
@@ -32,8 +39,24 @@
             {% else %}
                 <td>No</td>
             {% endif %}
-            <td ><a class="ui button" href="">Checkin</a></td>
-            <td ><a class="ui button" href="">Chekout</a></td>
+            
+            {% if device.available == True %}
+            <td ><a class="ui orange horizontal label" href="{% url 'Device:checkout-device' device.id %}">Chekout</a></td>
+            <td ></td>
+            {% else %}
+            <td ></td>
+            <td ><a class="ui teal horizontal label" href="{% url 'Device:checkin-device' device.id %}">Checkin</a></td>
+            {% endif %}
+            
+            <td >
+                <a class="ui blue horizontal label" href="">Edit </a>
+                <a class="ui red horizontal label" href="">Delete </a>
+            </td>
+
+            <td >
+                <a class="ui gray horizontal label" href="">Log </a>
+                
+            </td>
                 
             
 
