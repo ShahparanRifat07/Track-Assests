@@ -1,18 +1,37 @@
 {% extends 'layout/app.html' %}
 
-{% block content %}
-    <h1>Register</h1>
-    <form action="{% url 'Company:create-company' %}" method="POST">
-        {% csrf_token %}
-        <input type="text" name="company-name" placeholder="company name">
-        <input type="email" name="company-email" placeholder="company email">
-        <hr>
-        <input type="text" name="first-name" placeholder="first name">
-        <input type="text" name="last-name" placeholder="last name">
-        <input type="text" name="manager-email" placeholder="manager-email">
-        <input type="text" name="password" placeholder="password">
 
-        <button type="submit">Create</button>
-    </form>
-{% endblock content %}
+
+{% block content %}
+<h2>Company Register</h2>
+<hr>
+<form class="ui form" action="{% url 'Company:create-company' %}" method="POST">
+    {% csrf_token %}
+    <div class="field">
+        <label>Company Name</label>
+        <input type="text" name="company-name" placeholder="Company Name">
+    </div>
+    <div class="field">
+        <label>Company Email</label>
+        <input type="email" name="company-email" placeholder="Company Email">
+    </div>
+    <div class="field">
+        <label>First Name</label>
+        <input type="text" name="first-name" placeholder="First Name">
+    </div>
+    <div class="field">
+        <label>Last Name</label>
+        <input type="text" name="last-name" placeholder="Last Name">
+    </div>
+    <div class="field">
+        <label>Manager's Email</label>
+        <input type="email" name="manager-email" placeholder="Email Manager">
+    </div>
+    <div class="field">
+        <label>Password</label>
+        <input type="password" name="password" placeholder="Password">
+    </div>
     
+    <button class="ui button" type="submit">Register</button>
+</form>
+{% endblock content %}

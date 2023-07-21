@@ -1,0 +1,35 @@
+{% extends 'layout/app.html' %}
+
+
+
+{% block content %}
+<h2>Add Employee</h2>
+<hr>
+<form class="ui form" action="{% url 'Employee:add-employee' %}" method="POST">
+    {% csrf_token %}
+    <div class="field">
+        <label>First Name</label>
+        <input type="text" name="first-name" placeholder="First Name">
+    </div>
+    <div class="field">
+        <label>Last Name</label>
+        <input type="text" name="last-name" placeholder="Last Name">
+    </div>
+    <div class="field">
+        <label>Email</label>
+        <input type="email" name="email" placeholder="Email Manager">
+    </div>
+    <div class="field">
+        <label>Password</label>
+        <input type="password" name="password" placeholder="Password">
+    </div>
+    <div class="field">
+        <div class="ui checkbox">
+          <input type="checkbox" name="is_stuff">
+          <label>Is Staff</label>
+        </div>
+    </div>
+    
+    <button class="ui button" type="submit">Add Employee</button>
+</form>
+{% endblock content %}

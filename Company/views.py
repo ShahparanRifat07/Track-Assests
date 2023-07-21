@@ -11,6 +11,10 @@ from .models import Company
 Registering a company manually
 This can be also done quickly and with much less code by using django forms 
 """
+
+def dashboard(request):
+    return render(request,'company/dashboard.html')
+
 def create_company(request):
     if request.method == "POST":
         received_company_name = request.POST.get("company-name")
@@ -38,10 +42,12 @@ def create_company(request):
                 company_obj._manager_email = received_manager_email
                 company_obj._manager_password = received_password
                 company_obj.save()
-                return HttpResponse("hello")
-
+                return redirect('Account:login')
 
     elif request.method == "GET":
         return render(request,'company/register.html')
     else:
         return HttpResponse("Request Method not allowed")
+    
+
+

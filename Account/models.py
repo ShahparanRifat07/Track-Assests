@@ -7,6 +7,10 @@ Custom User Model
 """
 class User(AbstractUser):
     email = models.EmailField(unique=True, blank= False,editable=False)
-    REQUIRED_FIELDS = ["email"]
+    USERNAME_FIELD = "email"
+    REQUIRED_FIELDS = ["username"]
+
     def __str__(self):
         return f"{self.first_name} {self.last_name} -- {self.username}"
+    
+

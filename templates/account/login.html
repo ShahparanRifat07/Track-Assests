@@ -1,0 +1,21 @@
+{% extends 'layout/app.html' %}
+
+
+
+{% block content %}
+<h2>Login</h2>
+<hr>
+<form class="ui form" action="{% url 'Account:login' %}" method="POST">
+    {% csrf_token %}
+    <div class="field">
+        <label>Email</label>
+        <input type="email" name="email" placeholder="Email">
+    </div>
+    <div class="field">
+        <label>Password</label>
+        <input type="password" name="password" placeholder="Password">
+    </div>
+    
+    <button class="ui button" type="submit">Login</button>
+</form>
+{% endblock content %}

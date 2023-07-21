@@ -6,7 +6,7 @@ from Account.models import User
 
 class Company(models.Model):
     company_name = models.CharField(max_length=128,blank=False)
-    company_manager = models.OneToOneField(User, on_delete=models.CASCADE)
+    company_manager = models.OneToOneField(User, related_name="company_manager", on_delete=models.CASCADE)
     company_email = models.EmailField(max_length=128)
     created_at = models.DateTimeField(default=timezone.now,editable=False)
     updated_at = models.DateTimeField(auto_now=True) 
@@ -25,8 +25,7 @@ class Company(models.Model):
     
     @property
     def manager_password(self):
-        return self._manager_password
-                           
+        return self._manager_password               
 
     def __str__(self):
         return f"{self.company_name}"
