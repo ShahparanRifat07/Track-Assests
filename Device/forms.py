@@ -1,5 +1,5 @@
 from .models import Device,DeviceLog
-from django.forms import ModelForm, TextInput
+from django.forms import ModelForm, TextInput,DateInput
 
 class DeviceForm(ModelForm):
     class Meta:
@@ -12,14 +12,4 @@ class DeviceForm(ModelForm):
                 }),
         }
 
-class DeviceLogForm(ModelForm):
-    class Meta:
-        model = DeviceLog
-        fields = ["device","employee","checkout_date","chekin_date","condition_at_checkout_day","condition_at_checkin_day",
-                  "comment"]
-        required_fields = ["device","employee","checkout_date","condition_at_checkout_day",]
-        widgets = {
-            'name': TextInput(attrs={
-                'placeholder': 'Device Name'
-                }),
-        }
+        

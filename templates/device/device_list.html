@@ -1,0 +1,44 @@
+{% extends 'layout/app.html' %}
+
+
+
+{% block content %}
+<h3>Device List</h3>
+<hr>
+<table class="ui celled table">
+    <thead>
+      <tr><th>Name</th>
+      <th>Condition</th>
+      <th>Available</th>
+      <th>Chekin</th>
+      <th>Chekout</th>
+    </tr></thead>
+    <tbody>
+        
+        {% for device in devices  %}
+        <tr>
+            <td >{{device.name}}</td>
+            
+            {% if device.condition == "1"  %}
+                <td >Good</td>
+            {% elif device.condition == "2" %}
+                <td >Average</td>
+            {% elif device.condition == "3" %}
+                <td >Bad</td>
+            {% endif %}
+                
+            {% if device.available == True %}
+                <td >Yes</td>
+            {% else %}
+                <td>No</td>
+            {% endif %}
+            <td ><a class="ui button" href="">Checkin</a></td>
+            <td ><a class="ui button" href="">Chekout</a></td>
+                
+            
+
+        </tr>
+        {% endfor %}
+    </tbody>
+  </table>
+{% endblock content %}

@@ -26,10 +26,11 @@ class DeviceLog(models.Model):
     device = models.ForeignKey(Device,on_delete=models.CASCADE,related_name='device_log')
     employee = models.ForeignKey(Employee, on_delete=models.CASCADE,related_name='employee_log')
     checkout_date = models.DateField()
-    chekin_date = models.DateField(null=True,blank=True)
+    checkin_date = models.DateField(null=True,blank=True)
     condition_at_checkout_day = models.CharField(max_length = 1, choices = CONDITION)
     condition_at_checkin_day = models.CharField(max_length = 1, choices = CONDITION,null=True,blank=True)
     comment = models.TextField(max_length=512)
+    active = models.BooleanField(default=True)
     created_at = models.DateTimeField(default=timezone.now)
     updated_at = models.DateTimeField(auto_now=True) 
 

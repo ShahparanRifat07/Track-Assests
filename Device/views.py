@@ -1,11 +1,26 @@
 from django.shortcuts import render,redirect
 from django.http import HttpResponse
-from .forms import DeviceForm,DeviceLogForm
-from .models import  Device,DeviceLog
+from .forms import DeviceForm
+from .models import  Device
+from .decorators import manager_required
 # Create your views here.
 
-def add_device(request):
-    
+
+
+@manager_required
+def device_list(request):
+    if request.method == "GET":
+        devices = Device.objects.select_related('company').filter(company=request.user.company_manager)
+        context = {
+            'devices' : devices,
+        }
+        return render(request, 'device/device_list.html',context)
+    else:
+        return HttpResponse("Request Method not allowed")
+
+
+@manager_required
+def add_device(request): 
     if request.method == "POST":
         form = DeviceForm(request.POST)
         if form.is_valid():
@@ -28,9 +43,9 @@ def add_device(request):
         return HttpResponse("Request Method not allowed")
     
 
-def add_device_log(request):
-    form = DeviceLogForm()
+def check_out_device(request):
+    form = DeviceLogForm(request.user.company_manager)
     context = {
         'form': form,
     }
-    return render(request,'device/add_device.html',context)
+    return render(request,'device/add_device_log.html',context)
