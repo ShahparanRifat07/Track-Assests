@@ -7,13 +7,11 @@ from .decorators import manager_redirect,manager_required
 from .models import Company
 
 
-"""
-Registering a company manually
-This can be also done quickly and with much less code by using django forms 
-"""
+
 @manager_required
 def dashboard(request):
     return render(request,'company/dashboard.html')
+
 
 @manager_redirect
 def create_company(request):
@@ -49,6 +47,13 @@ def create_company(request):
         return render(request,'company/register.html')
     else:
         return HttpResponse("Request Method not allowed",status = 405)
-    
 
+
+@manager_redirect
+def edit_company(request):
+    pass
+
+@manager_redirect
+def delete_company(request):
+    pass
 

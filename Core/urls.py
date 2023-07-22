@@ -24,4 +24,12 @@ urlpatterns = [
     path('company/employee/',include('Employee.urls',namespace='Employee')),
     path('company/device/',include('Device.urls',namespace='Device')),
     path('subscription/',include('Subscription.urls',namespace='Subscription')),
+
+
+    #API
+    path('api/company/',include('Company.api.urls',namespace='Company')),
+    path('api/company/employee/',include('Employee.api.urls',namespace='Employee')),
+    path('api/company/device/',include('Device.api.urls',namespace='Device')),
+    path('api/subscription/',include('Subscription.api.urls',namespace='Subscription')),
+
 ]

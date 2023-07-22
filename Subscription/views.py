@@ -84,5 +84,7 @@ def stripe_webhook(request):
         company.stripe_product_id = session_id
         company.premium = True
         company.save()
+
+        #Can send emaill after this by using customer_email
         
     return HttpResponse(status=200)
