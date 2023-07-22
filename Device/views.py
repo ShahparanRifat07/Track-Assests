@@ -41,8 +41,15 @@ def add_device(request):
             device = Device()
             device.name = form.cleaned_data['name']
             device.condition = form.cleaned_data['condition']
-            device.available = form.cleaned_data['available']
-            device.company = request.user.company_manager
+            device.active = form.cleaned_data['active']
+
+            if request.type =="Company":
+                device.company = request.user.company_manager
+            elif request.type == "Employee":
+                device.company = request.user.employee.employee_company
+            else:
+                return HttpResponse("Forbidden",status=403)
+
             device.save()
 
             return redirect('Device:device-list')
@@ -53,6 +60,34 @@ def add_device(request):
             'form': form,
         }
         return render(request,'device/add_device.html',context)
+    else:
+        return HttpResponse("Request Method not allowed",status = 405)
+    
+
+
+@staff_or_manager_required
+def edit_device(request,id): 
+    try:
+        device = Device.objects.get(id=id)
+    except ObjectDoesNotExist:
+        return HttpResponse("Page Not Found", status=404)
+    if request.method == "POST":
+        form = DeviceForm(request.POST, instance=device)
+        if form.is_valid():
+            form.save()
+            return redirect('Device:device-list')
+    
+    elif request.method == "GET":
+        form = DeviceForm(data={
+            'name' : device.name,
+            'condition' : device.condition,
+            'active' : device.active,
+        })
+        context = {
+            'device' : device,
+            'form': form,
+        }
+        return render(request,'device/edit_device.html',context)
     else:
         return HttpResponse("Request Method not allowed",status = 405)
     

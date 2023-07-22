@@ -1,10 +1,10 @@
-from .models import Device,DeviceLog
-from django.forms import ModelForm, TextInput,DateInput
+from .models import Device
+from django.forms import ModelForm, TextInput
 
 class DeviceForm(ModelForm):
     class Meta:
         model = Device
-        fields = ["name","condition","available"]
+        fields = ["name","condition","active"]
         required_fields = ['name']
         widgets = {
             'name': TextInput(attrs={
