@@ -4,6 +4,7 @@ from django.contrib.auth.models import AbstractUser
 
 """
 Custom User Model
+Made changes so that user can login with email instead of username
 """
 class User(AbstractUser):
     email = models.EmailField(unique=True, blank= False,editable=False)
