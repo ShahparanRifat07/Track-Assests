@@ -28,9 +28,14 @@ def account_login(request):
                 if Company.objects.filter(company_manager = user):
                     login(request,user)
                     return redirect("Company:dashboard-company")
-                if Employee.objects.filter(user = user,is_staff = True):
+                elif Employee.objects.filter(user = user,is_staff = True):
                     login(request,user)
                     return redirect("Employee:staff-dashboard")
+                elif user.is_superuser:
+                    login(request,user)
+                    return redirect("admin:index")
+                else:
+                    return HttpResponse("You are not allowed to Login", status = 403)
             else:
                 messages.add_message(request, messages.INFO, "No User Found")
                 return redirect("Account:login")

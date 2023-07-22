@@ -20,3 +20,18 @@ def manager_required(view_func):
     return wrap
 
 
+def stuff_required(view_func):
+    def wrap(request,*args,**kwargs):
+        if request.user.is_authenticated:
+            try:
+                if request.user.employee.is_staff:
+                    return view_func(request,*args,**kwargs)
+                else:
+                    raise PermissionDenied
+            except ObjectDoesNotExist:
+                messages.add_message(request, messages.INFO, "Create a Company account to access")
+                return redirect('Account:login')
+        else:
+            return redirect('Account:login')
+        
+    return wrap

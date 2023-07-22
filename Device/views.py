@@ -6,16 +6,22 @@ from django.contrib import messages
 from .forms import DeviceForm
 from .models import  Device,DeviceLog
 from Employee.models import Employee
-from .decorators import manager_required,product_active_required
+from Company.models import Company
+from .decorators import staff_or_manager_required,product_active_required
 from django.utils import timezone
 # Create your views here.
 
 
 
-@manager_required
+@staff_or_manager_required
 def device_list(request):
     if request.method == "GET":
-        devices = Device.objects.select_related('company').filter(Q(company=request.user.company_manager) & Q(active=True))
+        if request.type =="Company":
+            devices = Device.objects.select_related('company').filter(Q(company=request.user.company_manager) & Q(active=True))
+        elif request.type == "Employee":
+            devices = Device.objects.select_related('company').filter(Q(company=request.user.employee.employee_company) & Q(active=True))
+        else:
+            return HttpResponse("Forbidden",status=403)
         context = {
             'devices' : devices,
         }
@@ -27,7 +33,7 @@ def device_list(request):
 
 
 
-@manager_required
+@staff_or_manager_required
 def add_device(request): 
     if request.method == "POST":
         form = DeviceForm(request.POST)
@@ -54,7 +60,7 @@ def add_device(request):
 
 
 
-@manager_required
+@staff_or_manager_required
 @product_active_required
 def check_out_device(request,id):
 
@@ -81,7 +87,12 @@ def check_out_device(request,id):
         
     elif request.method == "GET":
         if device.available == True:
-            employees = Employee.objects.select_related('employee_company').filter(employee_company = request.user.company_manager)
+            if request.type == "Company":
+                employees = Employee.objects.select_related('employee_company').filter(employee_company = request.user.company_manager)
+            elif request.type == "Employee":
+                employees = Employee.objects.select_related('employee_company').filter(employee_company = request.user.employee.employee_company)
+            else:
+                return HttpResponse("Forbidden",status=403)
             context = {
                 'device' : device,
                 'employees' : employees,
@@ -98,7 +109,7 @@ def check_out_device(request,id):
 
 
 
-@manager_required
+@staff_or_manager_required
 @product_active_required
 def check_in_device(request,id):
 
@@ -147,7 +158,7 @@ def check_in_device(request,id):
 
 
 
-@manager_required
+@staff_or_manager_required
 def device_log_list(request,id):
     if request.method == "GET":
         try:

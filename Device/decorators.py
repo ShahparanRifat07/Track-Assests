@@ -1,26 +1,34 @@
 from django.core.exceptions import PermissionDenied
 from django.core.exceptions import ObjectDoesNotExist
-from django.http import HttpResponse,HttpResponseNotAllowed,Http404
+from django.http import HttpResponse
 from django.contrib import messages
 from django.shortcuts import redirect
 from functools import wraps
-from .models import Device,DeviceLog
+from .models import Device
+from Employee.models import Employee
+from Company.models import Company
 
-def manager_required(view_fun):
-    def wrap(request,*args,**kwargs):
+
+def staff_or_manager_required(view_func):
+    @wraps(view_func)
+    def wrapped_view(request, *args, **kwargs):
         if request.user.is_authenticated:
-            try:
-                if request.user.company_manager:
-                    return view_fun(request,*args,**kwargs)
+            # try:
+                if Company.objects.filter(company_manager = request.user):
+                    request.type = "Company"
+                    return view_func(request,*args,**kwargs)
+                elif Employee.objects.filter(user = request.user,is_staff = True):
+                    request.type = "Employee"
+                    return view_func(request,*args,**kwargs)
                 else:
                     raise PermissionDenied
-            except ObjectDoesNotExist:
-                messages.add_message(request, messages.INFO, "Create a Company account to access")
-                return redirect('Company:create-company')
+            # except ObjectDoesNotExist:
+            #     return HttpResponse("Forbidden",status=403)
         else:
             return redirect('Account:login')
-        
-    return wrap
+    return wrapped_view
+
+
 
 def product_active_required(view_func):
     @wraps(view_func)
@@ -35,4 +43,6 @@ def product_active_required(view_func):
             messages.add_message(request, messages.INFO, "Product isn't active")
             return redirect('Device:device-list')
     return wrapped_view
+
+
 

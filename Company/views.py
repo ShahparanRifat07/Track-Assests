@@ -2,7 +2,7 @@ from django.shortcuts import render,redirect
 from django.http import HttpResponse
 from django.contrib import messages
 from .helper import *
-from .decorators import manager_redirect
+from .decorators import manager_redirect,manager_required
 
 from .models import Company
 
@@ -11,7 +11,7 @@ from .models import Company
 Registering a company manually
 This can be also done quickly and with much less code by using django forms 
 """
-
+@manager_required
 def dashboard(request):
     return render(request,'company/dashboard.html')
 
