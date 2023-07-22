@@ -48,9 +48,12 @@
             <td ><a class="ui teal horizontal label" href="{% url 'Device:checkin-device' device.id %}">Checkin</a></td>
             {% endif %}
             
-            <td >
+            <td style="display: flex;">
                 <a class="ui blue horizontal label" href="{% url 'Device:edit-device' device.id %}">Edit </a>
-                <a class="ui red horizontal label" href="">Delete </a>
+                <form action="{% url 'Device:delete-device' device.id %}" method="POST">
+                    {% csrf_token %}
+                    <button class="ui button red horizontal label" type="submit">Delete </button>
+                </form>
             </td>
 
             <td >

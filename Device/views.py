@@ -51,7 +51,6 @@ def add_device(request):
                 return HttpResponse("Forbidden",status=403)
 
             device.save()
-
             return redirect('Device:device-list')
     
     elif request.method == "GET":
@@ -63,6 +62,8 @@ def add_device(request):
     else:
         return HttpResponse("Request Method not allowed",status = 405)
     
+
+
 
 
 @staff_or_manager_required
@@ -90,7 +91,21 @@ def edit_device(request,id):
         return render(request,'device/edit_device.html',context)
     else:
         return HttpResponse("Request Method not allowed",status = 405)
-    
+
+
+  
+
+@staff_or_manager_required
+def delete_device(request,id): 
+    if request.method == "POST":
+        try:
+            device = Device.objects.get(id=id)
+            device.delete()
+            return redirect('Device:device-list')
+        except ObjectDoesNotExist:
+            return HttpResponse("Page Not Found", status=404)
+    else:
+        return HttpResponse("Request Method not allowed",status = 405)
 
 
 
