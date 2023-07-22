@@ -4,7 +4,7 @@ from django.contrib import messages
 from .helper import *
 from .models import Employee
 from Company.models import Company
-from .decorators import manager_required,stuff_required
+from .decorators import manager_required,stuff_required,premium_subscription_required
 # Create your views here.
 
 @stuff_required
@@ -20,6 +20,7 @@ def employee_list(request):
     return render(request, 'employee/employee_list.html',context)
 
 @manager_required
+@premium_subscription_required
 def add_employee(request):
     if request.method == "POST":
         received_first_name = request.POST.get("first-name")

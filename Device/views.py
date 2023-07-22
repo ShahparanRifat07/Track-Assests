@@ -7,7 +7,7 @@ from .forms import DeviceForm
 from .models import  Device,DeviceLog
 from Employee.models import Employee
 from Company.models import Company
-from .decorators import staff_or_manager_required,product_active_required
+from .decorators import staff_or_manager_required,product_active_required,premium_subscription_required
 from django.utils import timezone
 # Create your views here.
 
@@ -34,6 +34,7 @@ def device_list(request):
 
 
 @staff_or_manager_required
+@premium_subscription_required
 def add_device(request): 
     if request.method == "POST":
         form = DeviceForm(request.POST)

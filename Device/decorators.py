@@ -45,4 +45,30 @@ def product_active_required(view_func):
     return wrapped_view
 
 
+def premium_subscription_required(view_func):
+    @wraps(view_func)
+    def wrap(request,*args,**kwargs):
+        try:
+
+            if request.type == "Company":
+                employee_count = Employee.objects.filter(company = request.user.company_manager).count()
+                if not request.user.company_manager.premium and employee_count>=1000:
+                    return HttpResponse("You need to upgrade to premium plan to add more employee")
+                else:
+                    return view_func(request,*args,**kwargs)
+            elif request.type == "Employee":
+                employee_count = Employee.objects.filter(company = request.user.employee.employee_company).count()
+                if not request.user.employee.employee_company.premium and employee_count>=1000:
+                    return HttpResponse("You need to upgrade to premium plan to add more employee")
+                else:
+                    return view_func(request,*args,**kwargs)         
+            else:
+                return HttpResponse("What the hack are you doing here")
+
+        except ObjectDoesNotExist:
+            messages.add_message(request, messages.INFO, "Create a Company account to access")
+            return redirect('Account:login')   
+    return wrap
+
+
 
