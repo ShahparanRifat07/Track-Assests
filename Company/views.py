@@ -48,7 +48,7 @@ def create_company(request):
     elif request.method == "GET":
         return render(request,'company/register.html')
     else:
-        return HttpResponse("Request Method not allowed")
+        return HttpResponse("Request Method not allowed",status = 405)
     
 
 

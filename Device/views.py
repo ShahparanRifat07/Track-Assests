@@ -24,6 +24,9 @@ def device_list(request):
         return HttpResponse("Request Method not allowed",status = 405)
 
 
+
+
+
 @manager_required
 def add_device(request): 
     if request.method == "POST":
@@ -48,6 +51,9 @@ def add_device(request):
         return HttpResponse("Request Method not allowed",status = 405)
     
 
+
+
+
 @manager_required
 @product_active_required
 def check_out_device(request,id):
@@ -65,6 +71,9 @@ def check_out_device(request,id):
             log = DeviceLog(device = device,employee = employee,condition_at_checkout_day = device.condition)
             log.checkout_date = timezone.now().date().isoformat()
             log.save()
+
+            Device.objects.filter(id=id).update(available =False)
+
             return redirect('Device:device-list')
         else:
             messages.add_message(request, messages.INFO, "Device is currently not available")
@@ -86,17 +95,41 @@ def check_out_device(request,id):
     
 
 
+
+
+
 @manager_required
 @product_active_required
 def check_in_device(request,id):
 
     device = Device.objects.get(id=id)
     if request.method == "POST":
-        pass
+        if device.available == False:
+            try:
+                latest_device_log = DeviceLog.objects.filter(device=device, active=True,checkin_date=None).order_by('-checkout_date').first()
+            except ObjectDoesNotExist:
+                messages.add_message(request, messages.INFO, "Device needs to be chekout first")
+                return redirect('Device:device-list')
+            
+            received_condition = request.POST.get("condition")
+            received_comment = request.POST.get("comment")
+
+            latest_device_log.checkin_date = timezone.now().date().isoformat()
+            latest_device_log.condition_at_checkin_day = received_condition
+            latest_device_log.comment = received_comment,
+            latest_device_log.active = False
+            latest_device_log.save()
+            
+            Device.objects.filter(id=id).update(available =True,condition = received_condition)
+            return redirect('Device:device-list')
+        else:
+            messages.add_message(request, messages.INFO, "Device needs to be chekout first")
+            return redirect('Device:device-list')
+        
     elif request.method == "GET":
         if device.available == False:
             try:
-                latest_device_log = DeviceLog.objects.filter(device=device, active=True).order_by('-checkout_date').first()
+                latest_device_log = DeviceLog.objects.filter(device=device, active=True,checkin_date=None).order_by('-checkout_date').first()
             except ObjectDoesNotExist:
                 messages.add_message(request, messages.INFO, "Device needs to be chekout first")
                 return redirect('Device:device-list')
@@ -106,7 +139,7 @@ def check_in_device(request,id):
             }
             return render(request,'device/checkin_device.html',context)
         else:
-            messages.add_message(request, messages.INFO, "Device is currently not available")
+            messages.add_message(request, messages.INFO, "Device needs to be chekout first")
             return redirect('Device:device-list')
     else:
         return HttpResponse("Request Method not allowed",status = 405)

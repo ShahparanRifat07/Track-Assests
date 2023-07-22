@@ -2,7 +2,7 @@
 {% block content %}
 <h2>Device Chekout</h2>
 <hr>
-<form class="ui form" action="{% url 'Device:checkout-device' device.id %}" method="POST">
+<form class="ui form" action="{% url 'Device:checkin-device' device.id %}" method="POST">
     {% csrf_token %}
 
     <table class="ui table">
@@ -46,7 +46,7 @@
             <tr class="collapsing">
                 <td>Comment</td>
                 <td>
-                    <textarea name="" id="" rows="3"></textarea>
+                    <textarea name="comment" id="" rows="3"></textarea>
                 </td>
             </tr>
           </tbody>

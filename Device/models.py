@@ -25,9 +25,10 @@ class Device(models.Model):
         return f"{self.name}"
     
     def save(self, *args, **kwargs):
-        random_uuid = uuid.uuid4()
-        self.product_id = str(random_uuid)[:6]
-        super(Device, self).save(*args, **kwargs)
+        if self.product_id is None:
+            random_uuid = uuid.uuid4()
+            self.product_id = str(random_uuid)[:6]
+            super(Device, self).save(*args, **kwargs)
     
     
 
