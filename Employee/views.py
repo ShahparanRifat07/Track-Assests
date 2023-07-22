@@ -51,9 +51,24 @@ def add_employee(request):
                 employee_obj._password = received_password
 
                 employee_obj.save()
-                return redirect('Employee:add-employee')
+                return redirect('Employee:employee-list')
 
     elif request.method == "GET":
         return render(request,'employee/add_employee.html')
     else:
         return HttpResponse("Request Method not allowed")
+    
+
+@manager_required
+def edit_employee(request):
+    pass
+
+
+@manager_required
+def delete_employee(request):
+    pass
+
+
+@manager_required
+def employee_device_log(request):
+    pass

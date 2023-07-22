@@ -4,9 +4,11 @@
     </a>
     {% if user.is_authenticated %}
 
+    {% if user.company_manager %}
     <a href="{% url 'Employee:employee-list' %}" class="item">
       Employee
     </a>
+    {%  endif %}
     <a href="{% url 'Device:device-list' %}" class="item">
         Devices
       </a>

@@ -10,10 +10,18 @@ from Employee.models import Employee
 
 def home(request):
     if request.user.is_authenticated:
-        if request.user.company_manager:
-            return redirect("Company:dashboard-company")
+        
+        if request.user.is_superuser:
+            return redirect("admin:index")
+        elif Company.objects.filter(company_manager = request.user):
+                return redirect("Company:dashboard-company")
+        elif Employee.objects.filter(user = request.user,is_staff = True):
+            return redirect("Employee:staff-dashboard")
+        
     else:
         return render(request,'index.html')
+
+
 
 
 def account_login(request):
@@ -25,15 +33,15 @@ def account_login(request):
             user = authenticate(email= email,password = password)
 
             if user is not None:  
-                if Company.objects.filter(company_manager = user):
+                if user.is_superuser:
+                    login(request,user)
+                    return redirect("admin:index")
+                elif Company.objects.filter(company_manager = user):
                     login(request,user)
                     return redirect("Company:dashboard-company")
                 elif Employee.objects.filter(user = user,is_staff = True):
                     login(request,user)
                     return redirect("Employee:staff-dashboard")
-                elif user.is_superuser:
-                    login(request,user)
-                    return redirect("admin:index")
                 else:
                     return HttpResponse("You are not allowed to Login", status = 403)
             else:
@@ -47,6 +55,7 @@ def account_login(request):
     else:
         return redirect("Company:dashboard-company")
     
+
 
 def account_logout(request):
     logout(request)
