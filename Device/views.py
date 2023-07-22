@@ -143,4 +143,21 @@ def check_in_device(request,id):
             return redirect('Device:device-list')
     else:
         return HttpResponse("Request Method not allowed",status = 405)
-    
+
+
+
+@manager_required
+def device_log_list(request,id):
+    if request.method == "GET":
+        try:
+            device = Device.objects.get(id = id)
+        except ObjectDoesNotExist:
+            return HttpResponse("Page Not Found",status=404)
+        device_logs = DeviceLog.objects.select_related('device','employee').filter(device = device).order_by('-checkout_date')
+        context ={
+            'device' : device,
+            'device_logs' : device_logs
+        }
+        return render(request,'device/log_device.html',context)
+    else:
+        return HttpResponse("Request Method not allowed",status = 405)

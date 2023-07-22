@@ -1,0 +1,55 @@
+{% extends 'layout/app.html' %}
+{% block content %}
+<h2>Device Chekout</h2>
+<hr>
+    <table class="ui table">
+        <thead>
+            <tr>
+                <th colspan="7">
+                    {{device.name}}
+                </th>
+            </tr>
+            <tr>
+                <th>ID</th>
+                <th>Employee</th>
+                <th>Checkout Date</th>
+                <th>Checkin Date</th>
+                <th>Condition[Checkin]</th>
+                <th>Condition[Checkout]</th>
+                <th>Comment</th>
+            </tr>
+        </thead>
+        <tbody>
+            
+            {% for log  in device_logs %}
+            <tr class="collapsing">
+                <td>{{log.device.product_id}}</td>
+                <td>{{log.employee.user.first_name}}  {{log.employee.user.last_name}}</td>
+                <td>{{log.checkout_date}}</td>
+                <td>{{log.checkin_date}}</td>
+
+                {% if log.condition_at_checkout_day == "1"  %}
+                    <td >Good</td>
+                {% elif log.condition_at_checkout_day == "2" %}
+                    <td >Average</td>
+                {% elif log.condition_at_checkout_day == "3" %}
+                    <td >Bad</td>
+                {% endif %}
+
+                {% if log.condition_at_checkin_day == "1"  %}
+                    <td >Good</td>
+                {% elif log.condition_at_checkin_day == "2" %}
+                    <td >Average</td>
+                {% elif log.condition_at_checkin_day == "3" %}
+                    <td >Bad</td>
+                {% else %}
+                    <td>Not Returned Yet</td>
+                {% endif %}
+
+                <td>{{log.comment}}</td>
+              </tr>
+            {% endfor %}           
+          </tbody>
+    </table>
+
+{% endblock content %}
