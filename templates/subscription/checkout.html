@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Company Subscription</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://js.stripe.com/v3/"></script>
+</head>
+
+<body>
+    <section>
+        <div class="ui card">
+            <div class="description">
+                <h3>Premium Subscription</h3>
+                <h5>$199.00</h5>
+            </div>
+        </div>
+        <form action="{% url 'create-checkout-session' company.id %}" method="POST">
+            <button type="submit" id="checkout-button">Checkout</button>
+        </form>
+    </section>
+</body>
+
+</html>

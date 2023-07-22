@@ -1,38 +1,43 @@
 <div class="ui secondary  menu">
-    <a href="{% url 'Account:home' %}" class="active item">
-      Home
-    </a>
-    {% if user.is_authenticated %}
+  <a href="{% url 'Account:home' %}" class="active item">
+    Home
+  </a>
+  {% if user.is_authenticated %}
 
-    {% if user.company_manager %}
-    <a href="{% url 'Employee:employee-list' %}" class="item">
-      Employee
-    </a>
-    {%  endif %}
-    <a href="{% url 'Device:device-list' %}" class="item">
-        Devices
-      </a>
-    {% endif %}
-    <div class="right menu">
-      <!-- <div class="item">
+  {% if user.company_manager %}
+  <a href="{% url 'Employee:employee-list' %}" class="item">
+    Employee
+  </a>
+  {% endif %}
+  <a href="{% url 'Device:device-list' %}" class="item">
+    Devices
+  </a>
+  {% endif %}
+  <div class="right menu">
+    <!-- <div class="item">
         <div class="ui icon input">
           <input type="text" placeholder="Search...">
           <i class="search link icon"></i>
         </div>
       </div> -->
-      {% if user.is_authenticated %}
-      <form class="ui item" action="{% url 'Account:logout' %}" method="Post">
-        {% csrf_token %}
-        <button class="ui negative button" type="submit">Logout</button>
-      </form>
-      {% else %}
-      <a href="{% url 'Company:create-company' %}" class="ui item">
-        Register
-      </a>
-      <a href="{% url 'Account:login' %}" class="ui item">
-        Login
-      </a>
-      {% endif %}
-      
-    </div>
+    {% if user.company_manager and user.company_manager.premium == False %}
+    <a href="{% url 'Subscription:create-checkout-session' user.company_manager.id %}" class="ui item button orange horizontal label">
+      Premium Subscription
+    </a>
+    {% endif %}
+    {% if user.is_authenticated %}
+    <form class="ui item" action="{% url 'Account:logout' %}" method="Post">
+      {% csrf_token %}
+      <button class="ui negative button" type="submit">Logout</button>
+    </form>
+    {% else %}
+    <a href="{% url 'Company:create-company' %}" class="ui item">
+      Register
+    </a>
+    <a href="{% url 'Account:login' %}" class="ui item">
+      Login
+    </a>
+    {% endif %}
+
   </div>
+</div>

@@ -23,5 +23,5 @@ urlpatterns = [
     path('company/',include('Company.urls',namespace='Company')),
     path('company/employee/',include('Employee.urls',namespace='Employee')),
     path('company/device/',include('Device.urls',namespace='Device')),
-    path('company/subscription/',include('Subscription.urls',namespace='Subscription')),
+    path('subscription/',include('Subscription.urls',namespace='Subscription')),
 ]

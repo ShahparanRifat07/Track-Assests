@@ -1,6 +1,6 @@
 from django.shortcuts import render,redirect
 from django.core.exceptions import ObjectDoesNotExist
-from django.http import HttpResponse,HttpResponseNotAllowed,Http404
+from django.http import HttpResponse
 from django.db.models import Q
 from django.contrib import messages
 from .forms import DeviceForm
