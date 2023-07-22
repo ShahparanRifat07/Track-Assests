@@ -3,6 +3,8 @@ from django.http import HttpResponse
 from django.contrib.auth import login, logout, authenticate
 from django.contrib import messages
 from .models import User
+from Company.models import Company
+from Employee.models import Employee
 
 # Create your views here.
 
@@ -23,9 +25,12 @@ def account_login(request):
             user = authenticate(email= email,password = password)
 
             if user is not None:  
-                if user.company_manager:
+                if Company.objects.filter(company_manager = user):
                     login(request,user)
                     return redirect("Company:dashboard-company")
+                if Employee.objects.filter(user = user,is_staff = True):
+                    login(request,user)
+                    return redirect("Employee:staff-dashboard")
             else:
                 messages.add_message(request, messages.INFO, "No User Found")
                 return redirect("Account:login")

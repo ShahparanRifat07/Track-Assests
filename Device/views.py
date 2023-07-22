@@ -146,6 +146,7 @@ def check_in_device(request,id):
 
 
 
+
 @manager_required
 def device_log_list(request,id):
     if request.method == "GET":

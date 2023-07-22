@@ -4,9 +4,12 @@ from django.contrib import messages
 from .helper import *
 from .models import Employee
 from Company.models import Company
-from .decorators import manager_required
+from .decorators import manager_required,stuff_required
 # Create your views here.
 
+@stuff_required
+def staff_dashboard(request):
+    return render(request,'employee/staff_dashboard.html')
 
 @manager_required
 def employee_list(request):
@@ -23,7 +26,7 @@ def add_employee(request):
         received_last_name = request.POST.get("last-name")
         received_manager_email = request.POST.get("email")
         received_password = request.POST.get("password")
-        received_is_stuff = request.POST.get("is_stuff")
+        received_is_staff = request.POST.get("is_staff")
 
         if isEmpty(received_first_name,received_last_name,
             received_manager_email,received_password
@@ -38,9 +41,9 @@ def add_employee(request):
             else:
                 company = Company.objects.select_related('company_manager').filter(company_manager=request.user).first()
 
-                received_is_stuff = True if received_is_stuff == 'on' else False
+                received_is_staff = True if received_is_staff == 'on' else False
 
-                employee_obj = Employee(employee_company = company,is_stuff = received_is_stuff)
+                employee_obj = Employee(employee_company = company,is_staff = received_is_staff)
 
                 employee_obj._first_name = received_first_name
                 employee_obj._last_name = received_last_name

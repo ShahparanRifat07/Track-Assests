@@ -3,12 +3,12 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.contrib import messages
 from django.shortcuts import redirect
 
-def manager_required(view_fun):
+def manager_required(view_func):
     def wrap(request,*args,**kwargs):
         if request.user.is_authenticated:
             try:
                 if request.user.company_manager:
-                    return view_fun(request,*args,**kwargs)
+                    return view_func(request,*args,**kwargs)
                 else:
                     raise PermissionDenied
             except ObjectDoesNotExist:
@@ -18,3 +18,5 @@ def manager_required(view_fun):
             return redirect('Account:login')
         
     return wrap
+
+

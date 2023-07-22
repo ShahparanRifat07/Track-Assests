@@ -6,7 +6,7 @@ from Company.models import Company
 class Employee(models.Model):
     user = models.OneToOneField(User, related_name="employee", on_delete=models.CASCADE)
     employee_company = models.ForeignKey(Company,on_delete=models.CASCADE,related_name="employee_company")
-    is_stuff = models.BooleanField(default=False)
+    is_staff = models.BooleanField(default=False)
     created_at = models.DateTimeField(default=timezone.now)
     updated_at = models.DateTimeField(auto_now=True) 
 
